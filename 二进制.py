@@ -48,5 +48,4 @@ print(cache.get(key='92047291'))
 # print('utils/captcha/' + font)
 
 
-
-
+print('hello world')
