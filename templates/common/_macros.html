@@ -1,0 +1,5 @@
+{% macro static(filename) -%}
+    {{ url_for("static",filename=filename) }}
+{%- endmacro %}
+
+{####引用宏的时候会产生换号，因此用‘-’取消换行#}

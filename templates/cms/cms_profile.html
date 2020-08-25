@@ -1,0 +1,52 @@
+{% extends 'cms/cms_base.html' %}
+
+{% block title %}
+    CMS管理系统
+{% endblock %}
+
+{% block page_title %}
+    {{ g.cms_user.username }}，您好！
+{% endblock %}
+
+{% block main_content %}
+    {% set user = g.cms_user %}
+    <table class="table table-bordered" style="width: 300px">
+        <tr>
+            <td>用户名：</td>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <td>邮箱：</td>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <td>角色：</td>
+            <td>
+                {% for role in user.roles %}
+                    {{ role.name }}
+{#                    {{ user.roles }}#}
+                    {% if not loop.last %}
+                        ,
+                    {% endif %} 
+                {% endfor %}
+
+            </td>
+        </tr>
+        <tr>
+            <td>权限：</td>
+            <td>
+                {% for role in user.roles %}
+                    {{ role.desc }}
+                    {% if not loop.last %}
+                        /
+                    {% endif %}
+                {% endfor %}
+
+            </td>
+        </tr>
+        <tr>
+            <td>加入时间：</td>
+            <td>{{ user.join_time }}</td>
+        </tr>
+    </table>
+{% endblock %}
