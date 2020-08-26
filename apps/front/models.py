@@ -25,7 +25,7 @@ class FrontUser(db.Model):
 
     def __init__(self,*args,**kwargs):
         if 'password' in kwargs:
-            self._password = kwargs.get('password')
+            self.password = kwargs.get('password')
             kwargs.pop('password')
         super(FrontUser,self).__init__(*args,**kwargs)
 

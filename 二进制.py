@@ -11,7 +11,7 @@ from utils import cache
 
 cache.set(key='email',value='alex')
 # print(cache.get(key='amos@hk.chinamobile.com'))
-print(cache.get(key='92047291'))
+print(cache.get(key='tzic'))
 
 
 # import string,random
@@ -48,4 +48,4 @@ print(cache.get(key='92047291'))
 # print('utils/captcha/' + font)
 
 
-print('hello world')
+# print('hello world')

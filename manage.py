@@ -117,6 +117,7 @@ def create_user(telephone,username,password):
     frontuser = FrontUser(username=username,password=password,telephone=telephone)
     db.session.add(frontuser)
     db.session.commit()
+    print('添加用户成功')
 
 
 
