@@ -89,9 +89,15 @@ $(function () {
             },
             'success':function (data) {
                 if(data['code'] == 200){
-                    xtalert.alertSuccess('恭喜!用户注册成功！')
+                    var return_to = $("#return-to-span").text();
+                    // console.log(return_to)
+                    if(return_to){
+                        window.location=return_to;
+                    }else {
+                        xtalert.alertSuccess('恭喜!用户注册成功！');
+                    }
                 }else {
-                    xtalert.alertInfo(data['message'])
+                    xtalert.alertInfo(data['message']);
                 }
             },
             'fail':function () {

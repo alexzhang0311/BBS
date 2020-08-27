@@ -25,6 +25,8 @@ print(cache.get(key='tzic'))
 # text1 = ''.join(text)
 
 
+
+
 # from PIL import Image,ImageDraw,ImageFont
 # font = ImageFont.truetype('utils/captcha/segoeuib.ttf',25)
 # font_width, font_height = font.getsize(text1)
@@ -49,3 +51,5 @@ print(cache.get(key='tzic'))
 
 
 # print('hello world')
+# from urllib.parse import urlparse,urljoin
+# print(urljoin('http://127.0.0.1:8000/front/','http://www.baidu.com'))

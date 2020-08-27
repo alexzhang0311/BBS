@@ -17,6 +17,7 @@ class SignupForm(BaseForm):
         sms_captcha_mem = cache.get(key=telephone)
         #print("sms_captcha",sms_captcha)
         #print("sms_captcha_mem",sms_captcha_mem)
+        # if sms_captcha != '1111':
         if not sms_captcha_mem or sms_captcha_mem.lower() != sms_captcha.lower():
             raise ValidationError(message='短信验证码错误')
 
@@ -24,5 +25,6 @@ class SignupForm(BaseForm):
         graph_captcha = field.data
         #print(graph_captcha)
         #print(cache.get(key=graph_captcha.lower()))
+        # if graph_captcha != '1111':
         if not cache.get(key=graph_captcha.lower()):
             raise ValidationError(message='图形验证码错误')
