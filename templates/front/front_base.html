@@ -1,0 +1,37 @@
+{% from "common/_macros.html" import static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    {% block front_title %}{% endblock %}
+    <script src="{{ static('common/bootstrap/jquery.min.js') }}"></script>
+{#    <script src="https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>#}
+    <link href="{{ static('common/bootstrap/bootstrap.min.css') }}" rel="stylesheet">
+{#    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">#}
+    <script src="{{ static('common/bootstrap/bootstrap.min.js') }}"></script>
+{#    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>#}
+    <script src="{{ static("common/bootstrap/md5.min.js") }}"></script>
+    <script src="{{ static('front/js/xtparam.js') }}"></script>
+    <link rel="stylesheet" href="{{ static('common/sweetalert/sweetalert.css') }}">
+    <script src="{{ static('common/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ static('common/sweetalert/xtalert.js') }}"></script>
+    <script src="{{ static("common/zlajax.js") }}"></script>
+    {% block front_head %}{% endblock %}
+
+</head>
+<body>
+    <div class="outer-box">
+        <div class="logo">
+            <a href="/">
+                <img src="{{ static('common/images/NE2A1755.png') }}" alt="">
+            </a>
+        </div>
+        <h2 class="page-title">{% block front_page_title %}{% endblock %}</h2>
+        <div class="form-box">
+            {% block front_form_group %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>

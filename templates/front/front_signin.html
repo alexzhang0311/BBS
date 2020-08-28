@@ -1,0 +1,43 @@
+{% extends 'front/front_base.html' %}
+
+{% block front_title %}
+    <title>登陆涵涵弛弛家</title>
+{% endblock %}
+
+{% block front_head %}
+    <link href="{{ static('front/css/front_signbase.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block front_page_title %}
+    登陆涵涵弛弛家
+{% endblock %}
+
+{% block front_form_group %}
+    <div class="form-group">
+        <div class="form-group">
+            <input type="text" class="form-control" name="telephone" placeholder="手机号码">
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" name="password" placeholder="密码">
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="remember" value="1">记住我
+            </label>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-warning btn-block" id="submmit">
+                立即登录
+            </button>
+        </div>
+        <div class="from-group">
+            <a href="{{ url_for("front.signup") }}" class="signup-link">
+                立即注册!
+            </a>
+            <a href="#" class="resetpwd-link" style="float: right">忘记密码？</a>
+        </div>
+{#        <div class="form-group">#}
+{#            <a href="#" class="resetpwd-link">忘记密码？</a>#}
+{#        </div>#}
+    </div>
+{% endblock %}

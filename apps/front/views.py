@@ -8,9 +8,15 @@ bp = Blueprint('front',__name__,url_prefix='/front')
 def index():
     return render_template('front/front_index.html')
 
-@bp.route('/test/')
-def test():
-    return render_template('front/front_test.html')
+# @bp.route('/test/')
+# def test():
+#     return render_template('front/front_test.html')
+
+class SigninView(views.MethodView):
+    def get(self):
+        return render_template('front/front_signin.html')
+    def post(self):
+        pass
 
 class SignupView(views.MethodView):
     def get(self):
@@ -37,3 +43,4 @@ class SignupView(views.MethodView):
 # print(Captcha.gene_code())
 
 bp.add_url_rule('/signup/',view_func=SignupView.as_view('signup'))
+bp.add_url_rule('/signin/',view_func=SigninView.as_view('signin'))
