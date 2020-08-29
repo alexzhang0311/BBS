@@ -20,7 +20,7 @@ SECRET_KEY = os.urandom(24)
 PERMANENT_SESSION_LIFETIME = timedelta(hours=2)
 
 CMS_USER_ID = 'SDSADAS'
-
+USER_ID='lkjllk'
 #邮件配置
 MAIL_SERVER = 'smtp.gmail.com'
 MAIL_PORT = 587

@@ -28,3 +28,8 @@ class SignupForm(BaseForm):
         # if graph_captcha != '1111':
         if not cache.get(key=graph_captcha.lower()):
             raise ValidationError(message='图形验证码错误')
+
+class SigninForm(BaseForm):
+    telephone = StringField(validators=[Regexp(r'^9204\d{4}$',message='请输入正确格式的号码')])
+    password = StringField(validators=[Regexp(r'[0-9a-zA-Z_\.@]{6,20}',message='请输入正确格式的密码')])
+    remember = StringField()
