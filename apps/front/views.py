@@ -10,7 +10,7 @@ from .decorates import login_required
 import config
 bp = Blueprint('front',__name__,url_prefix='/front')
 @bp.route('/')
-# @login_required
+@login_required
 def index():
     return render_template('front/front_index.html')
 
@@ -32,7 +32,6 @@ class SigninView(views.MethodView):
             telephone = form.telephone.data
             password = form.password.data
             remember = form.remember.data
-            print(remember)
             user = FrontUser.query.filter_by(telephone=telephone).first()
             if user and user.check_password(password):
                 session[config.USER_ID] = user.telephone

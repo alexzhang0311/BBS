@@ -1,0 +1,25 @@
+{% from "common/_macros.html" import static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% include "common/_heads.html" %}
+    {% block front_title %}{% endblock %}
+    {% block front_head %}{% endblock %}
+
+</head>
+<body>
+    <div class="outer-box">
+        <div class="logo">
+            <a href="/">
+                <img src="{{ static('common/images/NE2A1755.png') }}" alt="">
+            </a>
+        </div>
+        <h2 class="page-title">{% block front_page_title %}{% endblock %}</h2>
+        <div class="form-box">
+            {% block front_form_group %}
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>
