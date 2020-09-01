@@ -2,12 +2,14 @@ from flask import (Blueprint,views,render_template,
                    request,session,redirect,url_for,
                    g)
 from flask_mail import Message
-from .forms import LoginForm,ResetpwdForm,ResetemailForm
+from .forms import (LoginForm,ResetpwdForm,ResetemailForm,AddBannerForm,
+                    UpdateBannerForm,DeleteBannerForm,AddBoardForm,UpdateBoardForm,DeleteBoardForm)
 from .models import CMSUser,CMSPermission
 from .decorates import login_required,permission_required
 from exts import db,mail
 from utils import restful,cache
 import config,string,random,re
+from ..models import BannerModel,BoardModel,PostModel,HighlightPostModel
 
 from werkzeug.security import check_password_hash
 bp = Blueprint('cms',__name__,url_prefix='/cms')
@@ -15,7 +17,7 @@ bp = Blueprint('cms',__name__,url_prefix='/cms')
 @bp.route('/')
 @login_required
 def index():
-    return render_template('cms/cmd_index.html')
+    return render_template('cms/cms_index.html')
 
 @bp.route('/email_captcha/') #修改邮箱验证码接口
 @login_required
@@ -56,7 +58,46 @@ def profile():
 @login_required
 @permission_required(CMSPermission.POSTER)
 def posts():
-    return render_template('cms/cms_posts.html')
+    posts = PostModel.query.all()
+    context={
+        "posts":posts
+    }
+    return render_template('cms/cms_posts.html',**context)
+
+@bp.route('/hpost/',methods=['POST'])
+@login_required
+@permission_required(CMSPermission.POSTER)
+def hpost():
+    post_id = request.form.get('post_id')
+    if not post_id:
+        return restful.params_error('请传入帖子ID')
+    else:
+        post = PostModel.query.get(post_id)
+        if not post:
+            return restful.params_error('该帖子不存在')
+        else:
+            highlight = HighlightPostModel()
+            highlight.post = post
+            db.session.add(highlight)
+            db.session.commit()
+            return restful.success('该帖子加精成功')
+
+@bp.route('/unhpost/',methods=['POST'])
+@login_required
+@permission_required(CMSPermission.POSTER)
+def unhpost():
+    post_id = request.form.get('post_id')
+    if not post_id:
+        return restful.params_error('请传入帖子ID')
+    else:
+        post = PostModel.query.get(post_id)
+        if not post:
+            return restful.params_error('该帖子不存在')
+        else:
+            highlight = post.highlight_post[0]
+            db.session.delete(highlight)
+            db.session.commit()
+            return restful.success('取消加精成功')
 
 @bp.route('/comments/')
 @login_required
@@ -68,7 +109,63 @@ def comments():
 @login_required
 @permission_required(CMSPermission.BOARDER)
 def boards():
-    return render_template('cms/cms_boards.html')
+    boards_all = BoardModel.query.all()
+    context = {
+        'boards':boards_all
+    }
+    return render_template('cms/cms_boards.html',**context)
+
+@bp.route('/aboard/',methods=['POST'])
+@login_required
+@permission_required(CMSPermission.BOARDER)
+def aboard():
+    form = AddBoardForm(request.form)
+    if form.validate():
+        name = form.name.data
+        board = BoardModel(name=name)
+        db.session.add(board)
+        db.session.commit()
+        return restful.success()
+    else:
+        message = form.get_error()
+        return restful.params_error(message)
+
+@bp.route('/uboard/',methods=['POST'])
+@login_required
+@permission_required(CMSPermission.BOARDER)
+def uboard():
+    form = UpdateBoardForm(request.form)
+    if form.validate():
+        board_id = form.board_id.data
+        name = form.name.data
+        board = BoardModel.query.get(board_id)
+        if board:
+            board.name = name
+            db.session.commit()
+            return restful.success(message='板块修改成功')
+        else:
+            return restful.params_error(message='没有这个板块')
+    else:
+        return restful.params_error(message=form.get_error())
+
+
+@bp.route('/dboard/',methods=['POST'])
+@login_required
+@permission_required(CMSPermission.BOARDER)
+def dboard():
+    # board_id = request.form.get('board_id')
+    form = DeleteBoardForm(request.form)
+    if form.validate():
+        board_id = form.board_id.data
+        board = BoardModel.query.get(board_id)
+        if board:
+            db.session.delete(board)
+            db.session.commit()
+            return restful.success()
+        else:
+            return restful.params_error(message='没有这个板块')
+    else:
+        return restful.params_error(message=form.get_error())
 
 @bp.route('/frontuser/')
 @login_required
@@ -88,6 +185,75 @@ def users():
 def groups():
     return render_template('cms/cms_groups.html')
 
+@bp.route('/banner/')
+@login_required
+@permission_required(CMSPermission.ADMIN)
+def banner():
+    banners = BannerModel.query.all()
+    return render_template('cms/cms_banner.html',banners=banners)
+
+@bp.route('/abanner/',methods=['POST'])
+@login_required
+@permission_required(CMSPermission.ADMIN)
+def abanner():
+    # print(request.form)
+    form = AddBannerForm(request.form)
+    if form.validate():
+        name = form.name.data
+        image_url = form.image_url.data
+        link_url = form.link_url.data
+        priority = form.priority.data
+        banner_db = BannerModel(name=name,image_url=image_url,link_url=link_url,priority=priority)
+        db.session.add(banner_db)
+        db.session.commit()
+        return restful.success(message='轮播图添加成功')
+    else:
+        message = form.get_error()
+        return restful.params_error(message=message)
+
+@bp.route('/ubanner/',methods=['POST'])
+@login_required
+@permission_required(CMSPermission.ADMIN)
+def ubanner():
+    # print(request.form)
+    form = UpdateBannerForm(request.form)
+    if form.validate():
+        name = form.name.data
+        banner_id = form.banner_id.data
+        image_url = form.image_url.data
+        link_url = form.link_url.data
+        priority = form.priority.data
+        banner = BannerModel.query.get(banner_id)
+        if banner:
+            banner.name = name
+            banner.image_url= image_url
+            banner.link_url = link_url
+            banner.priority = priority
+            db.session.commit()
+            return restful.success(message='轮播图修改成功')
+        else:
+            return restful.params_error(message='轮播图不存在')
+    else:
+        message = form.get_error()
+        return restful.params_error(message=message)
+
+@bp.route('/dbanner/',methods=['POST'])
+@login_required
+@permission_required(CMSPermission.ADMIN)
+def dbanner():
+    banner_id = request.form.get('banner_id')
+    # print(banner_id)
+    form = DeleteBannerForm(request.form)
+    if form.validate():
+        banner_id = form.banner_id.data
+        banner = BannerModel.query.get(banner_id)
+        db.session.delete(banner)
+        db.session.commit()
+        return restful.success('删除成功')
+    else:
+        message = form.get_error()
+        # print(message)
+        return restful.params_error(message=message)
 
 class ResetEmail(views.MethodView):
     decorators = [login_required]

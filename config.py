@@ -15,7 +15,7 @@ DB_URL = 'mysql+pymysql://{username}:{password}@{hostname}:{port}/{database}?cha
 SQLALCHEMY_DATABASE_URI = DB_URL
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-SECRET_KEY = os.urandom(24)
+SECRET_KEY = os.urandom(24) #项目每次启动会生成一个新的SECRET_KEY，影响session的解析
 
 PERMANENT_SESSION_LIFETIME = timedelta(hours=2)
 
@@ -35,3 +35,7 @@ MAIL_DEFAULT_SENDER = MAIL_USERNAME
 # MAIL_ASCII_ATTACHMENTS : default False 附件
 
 
+UEDITOR_UPLOAD_PATH = 'D:/Pycharm project/StudyFLASK/CH16_BBS/bbs/static/images'
+
+###Flask Pagination 相关配置
+PER_PAGE = 10

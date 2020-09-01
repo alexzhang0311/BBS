@@ -1,0 +1,72 @@
+{% extends 'front/front_base.html' %}
+{% from 'common/_macros.html' import static %}
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block front_head %}
+    <link rel="stylesheet" href="{{ static('front/css/front_pdetail.css') }}">
+    <script src="{{ static('ueditor/ueditor.config.js') }}"></script>
+    <script src="{{ static('ueditor/ueditor.all.min.js') }}"></script>
+    <script src="{{ static('front/js/front_acomment.js') }}"></script>
+
+{% endblock %}
+
+{% block body %}
+    <div class="lg-container">
+        <div class="post-container">
+            <h2>{{ post.title }}</h2>
+            <p class="post-info-group">
+                <span>发表时间：{{ post.create_time }}</span>
+                <span>作者：{{ post.author.username }}</span>
+                <span>所属板块：{{ post.board.name }}</span>
+                <span>阅读数：0</span>
+                <span>评论数：{{ post.comments|length }}</span>
+            </p>
+            <article class="post-content" id="post-content" data-id="{{ post.id }}">
+                {{ post.content|safe }}
+            </article>
+        </div>
+        <div class="comment-group">
+            <h3>评论列表</h3>
+            <ul class="comment-list-group">
+                {% for comment in post.comments %}
+                    <li>
+                        <div class="avatar-group">
+                            <img src="{{ comment.author.avatar or url_for('static',filename='common/images/NE2A1755.png') }}" alt="">
+                        </div>
+                        <div class="comment-content">
+                            <p class="author-info">
+                                <span>用户：{{ comment.author.username }}</span>
+                                <span>评论发表时间：{{ comment.create_time }}</span>
+                            </p>
+                            <p class="comment-txt">
+                                {{ comment.content|safe }}
+                            </p>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="add-comment-group">
+            <h3>发表评论</h3>
+            <script id="editor" type="text/plain" style="height: 100px"></script>
+            <button class="btn btn-danger" id="comment-btn">立即发布</button>
+        </div>
+    </div>
+
+    {% if user %}
+        <div class="sm-container">
+            <img src="{{ url_for('static',filename='common/images/NE2A1755.png') }}" alt="">
+            <p>{{ user.username }}</p>
+            <p>0积分</p>
+            <button class="btn btn-warning">Ta的主页</button>
+        </div>
+    {% else %}
+        <div class="sm-container">
+            <p>尚未登录</p>
+            <a href="{{ url_for("front.signin") }}" class="btn btn-warning">点击登录</a>
+        </div>
+    {% endif %}
+
+{% endblock %}

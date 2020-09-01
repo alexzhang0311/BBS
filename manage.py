@@ -4,6 +4,7 @@ from zlbbs import create_app
 from exts import db
 from apps.cms import models as cms_models
 from apps.front import models as front_models
+from apps.models import BannerModel,BoardModel,PostModel,CommentModel
 app = create_app()
 manager = Manager(app=app)
 FrontUser = front_models.FrontUser
@@ -120,6 +121,27 @@ def create_user(telephone,username,password):
     print('添加用户成功')
 
 
+@manager.command
+def create_test_post():
+    for x in range(1,205):
+        title = '标题%s'%x
+        content = '内容 %s'%x
+        board = BoardModel.query.first()
+        author = FrontUser.query.first()
+        post = PostModel(title=title,content=content)
+        post.board = board
+        post.author = author
+        db.session.add(post)
+        db.session.commit()
+        print('测试帖添加成功')
+
+@manager.command
+def delete_test_post():
+    for i in range(7, 211):
+        posts = PostModel.query.get(i)
+        db.session.delete(posts)
+        db.session.commit()
+        print('测试帖删除成功')
 
 if __name__ == '__main__':
     manager.run()

@@ -7,11 +7,11 @@
 # #判断某个用户有没有某个权限A：
 # #将需要对比的用户权限和A权限的二进制码进行与运算，如果得到的结果和A相等，那么代表用户有A权限，否则代表没有
 #
-from utils import cache
-
-cache.set(key='email',value='alex')
-# print(cache.get(key='amos@hk.chinamobile.com'))
-print(cache.get(key='tzic'))
+# from utils import cache
+#
+# cache.set(key='email',value='alex')
+# # print(cache.get(key='amos@hk.chinamobile.com'))
+# print(cache.get(key='tzic'))
 
 
 # import string,random
