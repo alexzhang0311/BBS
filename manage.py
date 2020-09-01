@@ -4,6 +4,7 @@ from zlbbs import create_app
 from exts import db
 from apps.cms import models as cms_models
 from apps.front import models as front_models
+from apps.models import BannerModel
 app = create_app()
 manager = Manager(app=app)
 FrontUser = front_models.FrontUser

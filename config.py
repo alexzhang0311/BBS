@@ -15,7 +15,7 @@ DB_URL = 'mysql+pymysql://{username}:{password}@{hostname}:{port}/{database}?cha
 SQLALCHEMY_DATABASE_URI = DB_URL
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-SECRET_KEY = os.urandom(24)
+SECRET_KEY = os.urandom(24) #项目每次启动会生成一个新的SECRET_KEY，影响session的解析
 
 PERMANENT_SESSION_LIFETIME = timedelta(hours=2)
 

@@ -6,13 +6,18 @@ from .forms import SignupForm,SigninForm
 from utils import restful,safeutils
 from exts import db
 from .models import FrontUser
+from ..models import BannerModel
 from .decorates import login_required
 import config
 bp = Blueprint('front',__name__,url_prefix='/front')
 @bp.route('/')
 @login_required
 def index():
-    return render_template('front/front_index.html')
+    banners = BannerModel.query.order_by(BannerModel.priority.asc()).limit(4)
+    context = {
+        'banners':banners
+    }
+    return render_template('front/front_index.html',banners=banners)
 
 # @bp.route('/test/')
 # def test():
@@ -35,7 +40,7 @@ class SigninView(views.MethodView):
             user = FrontUser.query.filter_by(telephone=telephone).first()
             if user and user.check_password(password):
                 session[config.USER_ID] = user.telephone
-                if remember == 'true' :
+                if remember == 'true':
                     session.permanent = True
                 return restful.success(message='登陆成功')
                 # return redirect(url_for('front.index'))

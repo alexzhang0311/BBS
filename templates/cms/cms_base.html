@@ -49,7 +49,7 @@
                 </li>
                 {% set cms_user = g.cms_user %}
                 {% if cms_user.has_permission(CMSPermission.ADMIN) %}
-                    <li class="nav-group post-manage"><a href="{{ url_for('cms.posts') }}">轮播图管理</a></li>
+                    <li class="nav-group banner-manage"><a href="{{ url_for('cms.banner') }}">轮播图管理</a></li>
                 {% endif %}
                 {% if cms_user.has_permission(CMSPermission.POSTER) %}
                     <li class="nav-group post-manage"><a href="{{ url_for('cms.posts') }}">帖子管理</a></li>
