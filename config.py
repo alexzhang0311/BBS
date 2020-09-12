@@ -39,3 +39,7 @@ UEDITOR_UPLOAD_PATH = 'D:/Pycharm project/StudyFLASK/CH16_BBS/bbs/static/images'
 
 ###Flask Pagination 相关配置
 PER_PAGE = 10
+
+###Celery 相关配置
+CELERY_RESULT_BACKEND = "redis://:Zc@2328980@192.168.110.2:6379/0"
+CELERY_BROKER_URL = "redis://:Zc@2328980@192.168.110.2:6379/0"

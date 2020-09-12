@@ -1,10 +1,11 @@
 from flask import Blueprint,request,make_response
 from utils import restful
 from utils import cache
-from utils.smssender import send_sms
+# from utils.smssender import send_sms #同步发送SMS
 from .forms import SMSCaptchaForm
 from io import BytesIO
 from utils.captcha import Captcha
+from task import send_sms_captcha #异步发送SMS
 bp = Blueprint('common',__name__,url_prefix='/common')
 
 @bp.route('/')
@@ -28,13 +29,16 @@ def sms_captcha():
     if form.validate():
         telephone = form.telephone.data
         code = Captcha.gene_text()
-        if send_sms(telephone=telephone,message=code):
-            cache.set(key=telephone, value=code)
-            return restful.success(message='短信发送成功')
-        else:
-            return restful.params_error('短信发送失败')
-    else:
-        return restful.params_error(message='参数错误')
+        send_sms_captcha(telephone=telephone, message=code)
+        return restful.success(message='短信发送成功') #Celery 异步发送
+    ###同步发送
+    #     if send_sms(telephone=telephone,message=code):
+    #         cache.set(key=telephone, value=code)
+    #         return restful.success(message='短信发送成功')
+    #     else:
+    #         return restful.params_error('短信发送失败')
+    # else:
+    #     return restful.params_error(message='参数错误')
 
 @bp.route('/captcha/')
 def graph_captcha():

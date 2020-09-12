@@ -10,6 +10,7 @@ from exts import db,mail
 from utils import restful,cache
 import config,string,random,re
 from ..models import BannerModel,BoardModel,PostModel,HighlightPostModel
+from task import send_mail
 
 from werkzeug.security import check_password_hash
 bp = Blueprint('cms',__name__,url_prefix='/cms')
@@ -34,13 +35,18 @@ def email_captcha():
         source.extend(map(lambda x:str(x),range(10)))
         captcha = ''.join(random.sample(source,6)) #source中随机取6位作为验证码,通过join列表转字符串
         body = 'Dear %s,\n\n  Please note your Captcha is: %s \n\nBR,\nCMS Team' % (g.cms_user.username,captcha)
-        message = Message(subject='CMS邮箱验证码',recipients=[email],body=body)
-        try:
-            mail.send(message)
-            cache.set(key=email, value=captcha)
-            return restful.success(message='邮件发送成功')
-        except:
-            return restful.server_error(message='邮件发送失败')
+        ###Start异步发送邮件
+        send_mail.delay(subject='CMS邮箱验证码', recipients=[email], body=body)  # Celery异步发送
+        cache.set(key=email, value=captcha)
+        return restful.success(message='邮件发送成功')
+        ###END异步发送邮件
+        # message = Message(subject='CMS邮箱验证码',recipients=[email],body=body) #同步发送
+        # try:
+        #     # mail.send(message) #同步发送
+        #     cache.set(key=email, value=captcha)
+        #     return restful.success(message='邮件发送成功')
+        # except:
+        #     return restful.server_error(message='邮件发送失败')
 
 @bp.route('/logout/')
 @login_required
