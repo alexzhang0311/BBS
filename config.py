@@ -1,7 +1,7 @@
 import os
 from datetime import timedelta
 from PIL import Image,ImageDraw,ImageFont
-DEBUG = True
+DEBUG = False
 
 HOSTNAME = '127.0.0.1'
 PORT = '3306'
