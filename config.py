@@ -35,7 +35,8 @@ MAIL_DEFAULT_SENDER = MAIL_USERNAME
 # MAIL_ASCII_ATTACHMENTS : default False 附件
 
 
-UEDITOR_UPLOAD_PATH = 'D:/Pycharm project/StudyFLASK/CH16_BBS/bbs/static/images'
+# UEDITOR_UPLOAD_PATH = 'D:/Pycharm project/StudyFLASK/CH16_BBS/bbs/static/images'
+UEDITOR_UPLOAD_PATH = '/root/bbs/static/images/'
 
 ###Flask Pagination 相关配置
 PER_PAGE = 10

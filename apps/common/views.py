@@ -29,6 +29,7 @@ def sms_captcha():
     if form.validate():
         telephone = form.telephone.data
         code = Captcha.gene_text()
+        cache.set(key=telephone, value=code)
         send_sms_captcha(telephone=telephone, message=code)
         return restful.success(message='短信发送成功') #Celery 异步发送
     ###同步发送
